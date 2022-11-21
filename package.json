@@ -5,6 +5,7 @@
   "main": "./lib/cjs/index.js",
   "types": "./lib/cjs/types/index.d.ts",
   "scripts": {
+    "start": "node lib/esm/index.mjs",
     "clean": "rm -rf ./lib",
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p ./configs/tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
