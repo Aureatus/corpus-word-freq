@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
     "copy": "copyfiles -f src/wordFreqList.txt lib",
-    "build": "npm run compile && npm run copy"
+    "build": "npm run compile && npm run copy",
+    "start": "node lib/index.js"
   },
   "files": [
     "lib/**/*"
