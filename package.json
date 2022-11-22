@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Aureatus/corpus-word-freq/issues"
   },
-  "homepage": "https://github.com/Aureatus/corpus-word-freq#readme"
+  "homepage": "https://github.com/Aureatus/corpus-word-freq#readme",
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
 }
