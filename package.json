@@ -5,7 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "compile": "tsc",
+    "copy": "copyfiles -f src/wordFreqList.txt lib",
+    "build": "npm run compile && npm run copy"
   },
   "files": [
     "lib/**/*"
@@ -21,6 +23,7 @@
   },
   "homepage": "https://github.com/Aureatus/corpus-word-freq#readme",
   "devDependencies": {
+    "copyfiles": "^2.4.1",
     "typescript": "^4.9.3"
   }
 }
