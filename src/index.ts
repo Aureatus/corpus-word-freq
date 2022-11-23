@@ -12,7 +12,9 @@ const wordFreqList: WordObject[] = JSON.parse(
 
 function getWordFrequency(word: string) {
   const wordObject = wordFreqList.find((e) => e.word === word);
-  return wordObject?.freq;
+  const wordFreq = wordObject?.freq;
+  const wordFreqNumber = Number(wordFreq);
+  return wordFreqNumber || undefined;
 }
 
 export { getWordFrequency };
