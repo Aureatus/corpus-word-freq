@@ -8,6 +8,10 @@
     "compile": "tsc",
     "copy": "copyfiles -f src/wordFreqList.txt lib",
     "build": "npm run compile && npm run copy",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags",
     "start": "node lib/index.js"
   },
   "files": [
