@@ -1,6 +1,6 @@
 {
   "name": "corpus-word-freq",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A package that finds the frequency of a word per million words, using Chapter 1, List 1.2 from https://ucrel.lancs.ac.uk/bncfreq/flists.html as it's source of word frequency data.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
