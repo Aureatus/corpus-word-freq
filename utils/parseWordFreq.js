@@ -57,6 +57,7 @@ async function processLineByLine(file) {
 
 async function processTextAndSave() {
   const wordFreqList = await processLineByLine("1_1_all_fullalpha.txt");
+  wordFreqList.sort(() => Math.random() - 0.5); // Shuffle array to remove alphabetic bias
   // Rank wordList in ascending frequency
   wordFreqList.sort((a, b) => {
     const freqA = a.freq;
