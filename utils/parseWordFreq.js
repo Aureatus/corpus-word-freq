@@ -57,6 +57,15 @@ async function processLineByLine(file) {
 
 async function processTextAndSave() {
   const wordFreqList = await processLineByLine("1_1_all_fullalpha.txt");
+  // Rank wordList in ascending frequency
+  wordFreqList.sort((a, b) => {
+    const freqA = a.freq;
+    const freqB = b.freq;
+    if (freqA > freqB) return 1;
+    if (freqA < freqB) return -1;
+    return 0;
+  });
+  console.log(wordFreqList);
   fs.writeFileSync(`src/wordFreqList.txt`, JSON.stringify(wordFreqList));
 }
 
