@@ -1,12 +1,39 @@
 const fs = require("node:fs");
 const readline = require("node:readline");
+/* CODE FOR READING ZIP FILE using jsZip
+fs.readFile("1_1_all_fullalpha.zip", (err, data) => {
+   if (err) throw err;
+   JSZip.loadAsync(data).then((zip) => {
+     const test = "1_1_all_fullalpha.txt";
+     zip
+       .file(test)
+       .async("string")
+       .then((data) => console.log(data));
+     const buffer = zip.files[test]._data.compressedContent;
+   });
+ }); 
+*/
 
 function parseToArrayOfObjects(line, parentArray) {
-  const normalizedLine = line.replaceAll(/\s/g, "  ").trim();
-  const lineArray = normalizedLine.split("  ");
+  let normalizedLine = line;
+  // .replaceAll(/[:]/g, "");
+  normalizedLine = normalizedLine.replaceAll(/\s+/g, " ").trim();
+  if (
+    normalizedLine.includes("@") ||
+    normalizedLine.includes("/") ||
+    normalizedLine.includes("&") ||
+    normalizedLine.includes("-")
+  )
+    return;
+  const lineArray = normalizedLine.split(" ");
+  let unwantedIndex = lineArray.findIndex((element) => element === ":");
+  if (unwantedIndex >= 0) lineArray.splice(unwantedIndex, 1);
+  unwantedIndex = lineArray.findIndex((element) => element === "%");
+  if (unwantedIndex >= 0) lineArray.splice(unwantedIndex, 1);
   const word = lineArray[0];
   const PoS = lineArray[1];
   const freq = lineArray[2];
+  if (PoS === "Num") return;
   parentArray.push({ word, freq, PoS });
 }
 
@@ -29,8 +56,8 @@ async function processLineByLine(file) {
 }
 
 async function processTextAndSave() {
-  const wordFreqList = await processLineByLine("1_2_all_freq.txt");
-  fs.writeFileSync(`src/wordFreqList.json`, JSON.stringify(wordFreqList));
+  const wordFreqList = await processLineByLine("1_1_all_fullalpha.txt");
+  fs.writeFileSync(`src/wordFreqList.txt`, JSON.stringify(wordFreqList));
 }
 
 processTextAndSave();
