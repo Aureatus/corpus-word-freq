@@ -22,7 +22,8 @@ function parseToArrayOfObjects(line, parentArray) {
     normalizedLine.includes("@") ||
     normalizedLine.includes("/") ||
     normalizedLine.includes("&") ||
-    normalizedLine.includes("-")
+    normalizedLine.includes("-") ||
+    normalizedLine.includes("'")
   )
     return;
   const lineArray = normalizedLine.split(" ");
@@ -66,7 +67,6 @@ async function processTextAndSave() {
     if (freqA < freqB) return -1;
     return 0;
   });
-  console.log(wordFreqList);
   fs.writeFileSync(`src/wordFreqList.txt`, JSON.stringify(wordFreqList));
 }
 
