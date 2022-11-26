@@ -61,8 +61,8 @@ async function processTextAndSave() {
   wordFreqList.sort(() => Math.random() - 0.5); // Shuffle array to remove alphabetic bias
   // Rank wordList in ascending frequency
   wordFreqList.sort((a, b) => {
-    const freqA = a.freq;
-    const freqB = b.freq;
+    const freqA = Number(a.freq);
+    const freqB = Number(b.freq);
     if (freqA > freqB) return 1;
     if (freqA < freqB) return -1;
     return 0;
