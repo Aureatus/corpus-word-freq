@@ -32,6 +32,7 @@ function parseToArrayOfObjects(line, parentArray) {
   unwantedIndex = lineArray.findIndex((element) => element === "%");
   if (unwantedIndex >= 0) lineArray.splice(unwantedIndex, 1);
   const word = lineArray[0];
+  if (word.match(/\d/g)) return;
   const PoS = lineArray[1];
   const freq = lineArray[2];
   if (PoS === "Num") return;
@@ -53,6 +54,7 @@ async function processLineByLine(file) {
     // Each line in input.txt will be successively available here as `line`.
     parseToArrayOfObjects(line, parentArray);
   }
+  console.log(parentArray.length);
   return parentArray;
 }
 
