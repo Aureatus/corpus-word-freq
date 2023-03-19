@@ -77,6 +77,16 @@ async function processTextAndSave() {
     }
   });
 
+  const FrequencyGroupedWords = frequencies.map((e) => {
+    const index1 = wordFreqList.findIndex((word) => word.freq === e);
+    const index2 = wordFreqList.findLastIndex((word) => word.freq === e);
+    const test = !(index1 === index2)
+      ? wordFreqList.slice(index1, index2)
+      : wordFreqList[index1];
+
+    return Array.isArray(test) ? test : [test];
+  });
+
   fs.writeFileSync(`src/wordFreqList.txt`, JSON.stringify(wordFreqList));
 }
 
