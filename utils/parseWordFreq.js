@@ -35,8 +35,9 @@ function parseToArrayOfObjects(line, parentArray) {
   if (word.match(/\d/g)) return;
   const PoS = lineArray[1];
   const freq = lineArray[2];
+  const disp = lineArray[4];
   if (PoS === "Num") return;
-  parentArray.push({ word, freq, PoS });
+  parentArray.push({ word, freq, PoS, disp });
 }
 
 async function processLineByLine(file) {
@@ -54,7 +55,6 @@ async function processLineByLine(file) {
     // Each line in input.txt will be successively available here as `line`.
     parseToArrayOfObjects(line, parentArray);
   }
-  console.log(parentArray.length);
   return parentArray;
 }
 
@@ -69,6 +69,14 @@ async function processTextAndSave() {
     if (freqA < freqB) return -1;
     return 0;
   });
+
+  let frequencies = [];
+  wordFreqList.forEach((e, index) => {
+    if (e.freq !== wordFreqList[index - 1]?.freq) {
+      frequencies.push(e.freq);
+    }
+  });
+
   fs.writeFileSync(`src/wordFreqList.txt`, JSON.stringify(wordFreqList));
 }
 
