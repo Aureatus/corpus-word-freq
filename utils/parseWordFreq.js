@@ -35,8 +35,9 @@ function parseToArrayOfObjects(line, parentArray) {
   if (word.match(/\d/g)) return;
   const PoS = lineArray[1];
   const freq = lineArray[2];
+  const disp = lineArray[4];
   if (PoS === "Num") return;
-  parentArray.push({ word, freq, PoS });
+  parentArray.push({ word, freq, PoS, disp });
 }
 
 async function processLineByLine(file) {
@@ -54,7 +55,6 @@ async function processLineByLine(file) {
     // Each line in input.txt will be successively available here as `line`.
     parseToArrayOfObjects(line, parentArray);
   }
-  console.log(parentArray.length);
   return parentArray;
 }
 
@@ -69,7 +69,42 @@ async function processTextAndSave() {
     if (freqA < freqB) return -1;
     return 0;
   });
-  fs.writeFileSync(`src/wordFreqList.txt`, JSON.stringify(wordFreqList));
+
+  let frequencies = [];
+  wordFreqList.forEach((e, index) => {
+    if (e.freq !== wordFreqList[index - 1]?.freq) {
+      frequencies.push(e.freq);
+    }
+  });
+
+  const FrequencyGroupedWords = frequencies.map((e) => {
+    const index1 = wordFreqList.findIndex((word) => word.freq === e);
+    const index2 = wordFreqList.findLastIndex((word) => word.freq === e);
+    const test = !(index1 === index2)
+      ? wordFreqList.slice(index1, index2)
+      : wordFreqList[index1];
+
+    return Array.isArray(test) ? test : [test];
+  });
+
+  const DispersionSortedWordList = FrequencyGroupedWords.map((e) => {
+    return e.sort((a, b) => {
+      const dispA = Number(a.disp);
+      const dispB = Number(b.disp);
+
+      if (dispA > dispB) return 1;
+      if (dispA < dispB) return -1;
+
+      return 0;
+    });
+  }).flat();
+
+  // DispersionSortedWordListcurrently 289 shorter than wordFreqList, not sure why.
+
+  fs.writeFileSync(
+    `src/wordFreqList.txt`,
+    JSON.stringify(DispersionSortedWordList)
+  );
 }
 
 processTextAndSave();
