@@ -87,7 +87,24 @@ async function processTextAndSave() {
     return Array.isArray(test) ? test : [test];
   });
 
-  fs.writeFileSync(`src/wordFreqList.txt`, JSON.stringify(wordFreqList));
+  const DispersionSortedWordList = FrequencyGroupedWords.map((e) => {
+    return e.sort((a, b) => {
+      const dispA = Number(a.disp);
+      const dispB = Number(b.disp);
+
+      if (dispA > dispB) return 1;
+      if (dispA < dispB) return -1;
+
+      return 0;
+    });
+  }).flat();
+
+  // DispersionSortedWordListcurrently 289 shorter than wordFreqList, not sure why.
+
+  fs.writeFileSync(
+    `src/wordFreqList.txt`,
+    JSON.stringify(DispersionSortedWordList)
+  );
 }
 
 processTextAndSave();
