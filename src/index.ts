@@ -1,6 +1,8 @@
 /* eslint-disable no-loop-func */
 import { readFileSync } from 'fs';
 
+import { unzipSync } from 'node:zlib';
+
 interface WordObject {
   word: string;
   freq: string;
@@ -8,8 +10,9 @@ interface WordObject {
 }
 
 const corpusObject = (posToRemove: string[] | null = null) => {
+  const wordFreqListBuffer = readFileSync(`${__dirname}/wordFreqList.txt.gz`);
   let wordFreqList: WordObject[] = JSON.parse(
-    readFileSync(`${__dirname}/wordFreqList.txt`, 'utf-8')
+    unzipSync(wordFreqListBuffer).toString()
   );
 
   wordFreqList = wordFreqList.filter(

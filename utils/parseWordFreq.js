@@ -1,18 +1,6 @@
 const fs = require('node:fs');
 const readline = require('node:readline');
-/* CODE FOR READING ZIP FILE using jsZip
-fs.readFile("1_1_all_fullalpha.zip", (err, data) => {
-   if (err) throw err;
-   JSZip.loadAsync(data).then((zip) => {
-     const test = "1_1_all_fullalpha.txt";
-     zip
-       .file(test)
-       .async("string")
-       .then((data) => console.log(data));
-     const buffer = zip.files[test]._data.compressedContent;
-   });
- }); 
-*/
+const { gzipSync } = require('node:zlib');
 
 function parseToArrayOfObjects(line, parentArray) {
   let normalizedLine = line;
@@ -101,8 +89,8 @@ async function processTextAndSave() {
   // DispersionSortedWordListcurrently 289 shorter than wordFreqList, not sure why.
 
   fs.writeFileSync(
-    `src/wordFreqList.txt`,
-    JSON.stringify(DispersionSortedWordList)
+    `src/wordFreqList.txt.gz`,
+    gzipSync(JSON.stringify(DispersionSortedWordList))
   );
 }
 
