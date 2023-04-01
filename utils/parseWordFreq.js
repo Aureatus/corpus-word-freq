@@ -1,5 +1,5 @@
-const fs = require("node:fs");
-const readline = require("node:readline");
+const fs = require('node:fs');
+const readline = require('node:readline');
 /* CODE FOR READING ZIP FILE using jsZip
 fs.readFile("1_1_all_fullalpha.zip", (err, data) => {
    if (err) throw err;
@@ -16,27 +16,26 @@ fs.readFile("1_1_all_fullalpha.zip", (err, data) => {
 
 function parseToArrayOfObjects(line, parentArray) {
   let normalizedLine = line;
-  // .replaceAll(/[:]/g, "");
-  normalizedLine = normalizedLine.replaceAll(/\s+/g, " ").trim();
+  normalizedLine = normalizedLine.replaceAll(/\s+/g, ' ').trim();
   if (
-    normalizedLine.includes("@") ||
-    normalizedLine.includes("/") ||
-    normalizedLine.includes("&") ||
-    normalizedLine.includes("-") ||
+    normalizedLine.includes('@') ||
+    normalizedLine.includes('/') ||
+    normalizedLine.includes('&') ||
+    normalizedLine.includes('-') ||
     normalizedLine.includes("'")
   )
     return;
-  const lineArray = normalizedLine.split(" ");
-  let unwantedIndex = lineArray.findIndex((element) => element === ":");
+  const lineArray = normalizedLine.split(' ');
+  let unwantedIndex = lineArray.findIndex(element => element === ':');
   if (unwantedIndex >= 0) lineArray.splice(unwantedIndex, 1);
-  unwantedIndex = lineArray.findIndex((element) => element === "%");
+  unwantedIndex = lineArray.findIndex(element => element === '%');
   if (unwantedIndex >= 0) lineArray.splice(unwantedIndex, 1);
   const word = lineArray[0];
   if (word.match(/\d/g)) return;
   const PoS = lineArray[1];
   const freq = lineArray[2];
   const disp = lineArray[4];
-  if (PoS === "Num") return;
+  if (PoS === 'Num') return;
   parentArray.push({ word, freq, PoS, disp });
 }
 
@@ -59,7 +58,7 @@ async function processLineByLine(file) {
 }
 
 async function processTextAndSave() {
-  const wordFreqList = await processLineByLine("1_1_all_fullalpha.txt");
+  const wordFreqList = await processLineByLine('1_1_all_fullalpha.txt');
   wordFreqList.sort(() => Math.random() - 0.5); // Shuffle array to remove alphabetic bias
   // Rank wordList in ascending frequency
   wordFreqList.sort((a, b) => {
@@ -77,9 +76,9 @@ async function processTextAndSave() {
     }
   });
 
-  const FrequencyGroupedWords = frequencies.map((e) => {
-    const index1 = wordFreqList.findIndex((word) => word.freq === e);
-    const index2 = wordFreqList.findLastIndex((word) => word.freq === e);
+  const FrequencyGroupedWords = frequencies.map(e => {
+    const index1 = wordFreqList.findIndex(word => word.freq === e);
+    const index2 = wordFreqList.findLastIndex(word => word.freq === e);
     const test = !(index1 === index2)
       ? wordFreqList.slice(index1, index2)
       : wordFreqList[index1];
@@ -87,7 +86,7 @@ async function processTextAndSave() {
     return Array.isArray(test) ? test : [test];
   });
 
-  const DispersionSortedWordList = FrequencyGroupedWords.map((e) => {
+  const DispersionSortedWordList = FrequencyGroupedWords.map(e => {
     return e.sort((a, b) => {
       const dispA = Number(a.disp);
       const dispB = Number(b.disp);
