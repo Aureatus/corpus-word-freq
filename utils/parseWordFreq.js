@@ -89,8 +89,8 @@ async function processTextAndSave() {
   // DispersionSortedWordListcurrently 289 shorter than wordFreqList, not sure why.
 
   fs.writeFileSync(
-    `src/wordFreqList.txt.gz`,
-    gzipSync(JSON.stringify(DispersionSortedWordList))
+    `src/wordFreqList.json.gz`,
+    gzipSync(Buffer.from(JSON.stringify(DispersionSortedWordList)))
   );
 }
 

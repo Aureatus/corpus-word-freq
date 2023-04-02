@@ -10,9 +10,11 @@ interface WordObject {
 }
 
 const corpusObject = (posToRemove: string[] | null = null) => {
-  const wordFreqListBuffer = readFileSync(`${__dirname}/wordFreqList.txt.gz`);
+  const compressedWordFreqList = readFileSync(
+    `${__dirname}/wordFreqList.json.gz`
+  );
   let wordFreqList: WordObject[] = JSON.parse(
-    unzipSync(wordFreqListBuffer).toString()
+    unzipSync(compressedWordFreqList).toString()
   );
 
   wordFreqList = wordFreqList.filter(
