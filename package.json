@@ -33,18 +33,7 @@
   "name": "corpus-word-freq",
   "author": "Aureatus",
   "module": "dist/corpus-word-freq.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/corpus-word-freq.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/corpus-word-freq.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^8.2.4",
     "husky": "^8.0.3",
     "rollup-plugin-static-files": "^0.2.0",
     "size-limit": "^8.2.4",
