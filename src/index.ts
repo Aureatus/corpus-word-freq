@@ -30,19 +30,19 @@ const corpusObject = (posToRemove: string[] | null = null) => {
   const getMatchedWords = (wordList: string[], desiredMatches: number) => {
     const matchedWords: WordObject[] = [];
 
-    wordList.forEach((_element, index) => {
-      if (matchedWords.length === desiredMatches) return;
+    for (const [index] of wordList.entries()) {
+      if (matchedWords.length === desiredMatches) break;
       const isWordDuplicate = matchedWords.some(
         wordObject => wordFreqList[index].word === wordObject.word
       );
 
-      if (isWordDuplicate) index++;
+      if (isWordDuplicate) continue;
 
       const matchedWordObject = wordList.find(
         word => word === wordFreqList[index].word
       );
       if (matchedWordObject) matchedWords.push(wordFreqList[index]);
-    });
+    }
 
     return matchedWords;
   };
