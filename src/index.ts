@@ -1,4 +1,3 @@
-/* eslint-disable no-loop-func */
 import { readFileSync } from 'fs';
 
 import { unzipSync } from 'zlib';
@@ -29,10 +28,10 @@ const corpusObject = (posToRemove: string[] | null = null) => {
   };
 
   const getMatchedWords = (wordList: string[], desiredMatches: number) => {
-    let index = 0;
     const matchedWords: WordObject[] = [];
 
-    while (matchedWords.length < desiredMatches) {
+    wordList.forEach((_element, index) => {
+      if (matchedWords.length === desiredMatches) return;
       const isWordDuplicate = matchedWords.some(
         wordObject => wordFreqList[index].word === wordObject.word
       );
@@ -43,9 +42,8 @@ const corpusObject = (posToRemove: string[] | null = null) => {
         word => word === wordFreqList[index].word
       );
       if (matchedWordObject) matchedWords.push(wordFreqList[index]);
+    });
 
-      index++;
-    }
     return matchedWords;
   };
 
