@@ -43,7 +43,8 @@ const corpusObject = (posToRemove: string[] | null = null) => {
       );
       if (matchedWordObject) matchedWords.push(wordFreqList[index]);
     }
-
+    if (matchedWords.length < desiredMatches)
+      throw Error("Couldn't find desired amount of matches");
     return matchedWords;
   };
 
