@@ -1,7 +1,7 @@
 /* eslint-disable no-loop-func */
 import { readFileSync } from 'fs';
 
-import { unzipSync } from 'node:zlib';
+import { unzipSync } from 'zlib';
 
 interface WordObject {
   word: string;
