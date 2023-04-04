@@ -27,22 +27,27 @@ const corpusObject = (posToRemove: string[] | null = null) => {
     return typeof wordFreqNumber === 'number' ? wordFreqNumber : undefined;
   };
 
-  const getMatchedWords = (wordList: string[], desiredMatches: number) => {
+  const getMatchedWords = (
+    wordList: string[],
+    desiredMatches: number,
+    common = false
+  ) => {
+    const freqList = common ? [...wordFreqList].reverse() : wordFreqList;
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
     const matchedWords: WordObject[] = [];
 
     for (const [index] of lowerCasedWordList.entries()) {
       if (matchedWords.length === desiredMatches) break;
       const isWordDuplicate = matchedWords.some(
-        wordObject => wordFreqList[index].word === wordObject.word
+        wordObject => freqList[index].word === wordObject.word
       );
 
       if (isWordDuplicate) continue;
 
       const matchedWordObject = lowerCasedWordList.find(
-        word => word === wordFreqList[index].word
+        word => word === freqList[index].word
       );
-      if (matchedWordObject) matchedWords.push(wordFreqList[index]);
+      if (matchedWordObject) matchedWords.push(freqList[index]);
     }
     if (matchedWords.length < desiredMatches)
       throw Error("Couldn't find desired amount of matches");
