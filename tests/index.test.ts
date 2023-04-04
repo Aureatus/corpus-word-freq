@@ -21,11 +21,11 @@ describe('Word Frequencies', () => {
 describe('Matched words', () => {
   const corpus = corpusObject();
 
-  test('Returned rare amount of words is correct', () => {
+  test('Returns correct amount of rare words', () => {
     expect(corpus.getMatchedWords(BeautifulCreatures, 20)).toHaveLength(20);
   });
 
-  test('Returned common amount of words is correct', () => {
+  test('Returns correct amount of common words', () => {
     expect(corpus.getMatchedWords(BeautifulCreatures, 20, true)).toHaveLength(
       20
     );
