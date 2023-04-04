@@ -28,9 +28,10 @@ const corpusObject = (posToRemove: string[] | null = null) => {
   };
 
   const getMatchedWords = (wordList: string[], desiredMatches: number) => {
+    const lowerCasedWordList = wordList.map(e => e.toLowerCase());
     const matchedWords: WordObject[] = [];
 
-    for (const [index] of wordList.entries()) {
+    for (const [index] of lowerCasedWordList.entries()) {
       if (matchedWords.length === desiredMatches) break;
       const isWordDuplicate = matchedWords.some(
         wordObject => wordFreqList[index].word === wordObject.word
@@ -38,7 +39,7 @@ const corpusObject = (posToRemove: string[] | null = null) => {
 
       if (isWordDuplicate) continue;
 
-      const matchedWordObject = wordList.find(
+      const matchedWordObject = lowerCasedWordList.find(
         word => word === wordFreqList[index].word
       );
       if (matchedWordObject) matchedWords.push(wordFreqList[index]);
