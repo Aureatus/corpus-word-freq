@@ -4,7 +4,10 @@ const { gzipSync } = require('node:zlib');
 
 function parseToArrayOfObjects(line, parentArray) {
   let normalizedLine = line;
-  normalizedLine = normalizedLine.replaceAll(/\s+/g, ' ').trim();
+  normalizedLine = normalizedLine
+    .replaceAll(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
   if (
     normalizedLine.includes('@') ||
     normalizedLine.includes('/') ||
