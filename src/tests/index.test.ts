@@ -1,4 +1,4 @@
-import { corpusObject } from '../src/index';
+import { corpusObject } from '../index';
 import BeautifulCreatures from './testingData/BeautifulCreatures.json';
 
 describe('Word Frequencies', () => {
