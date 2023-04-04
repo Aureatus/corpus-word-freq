@@ -21,10 +21,15 @@ describe('Word Frequencies', () => {
 describe('Matched words', () => {
   const corpus = corpusObject();
 
-  test('Returned amount of words is correct', () => {
+  test('Returned rare amount of words is correct', () => {
     expect(corpus.getMatchedWords(BeautifulCreatures, 20)).toHaveLength(20);
   });
 
+  test('Returned common amount of words is correct', () => {
+    expect(corpus.getMatchedWords(BeautifulCreatures, 20, true)).toHaveLength(
+      20
+    );
+  });
   test('Throws error if not enough words can be found', () => {
     expect(() => corpus.getMatchedWords(['than'], 4)).toThrow(
       "Couldn't find desired amount of matches"
