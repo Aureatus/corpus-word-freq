@@ -36,7 +36,7 @@ const corpusObject = (posToRemove: string[] | null = null) => {
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
     const matchedWords: WordObject[] = [];
 
-    for (const [index] of lowerCasedWordList.entries()) {
+    for (const [index] of freqList.entries()) {
       if (matchedWords.length === desiredMatches) break;
       const isWordDuplicate = matchedWords.some(
         wordObject => freqList[index].word === wordObject.word
