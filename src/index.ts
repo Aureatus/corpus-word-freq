@@ -2,14 +2,38 @@ import { readFileSync } from 'fs';
 
 import { unzipSync } from 'zlib';
 
+export type patternOfSpeech =
+  | 'Uncl'
+  | 'DetP'
+  | 'Fore'
+  | 'NoP'
+  | 'Adj'
+  | 'Det'
+  | 'Inf'
+  | 'Lett'
+  | 'NoC'
+  | 'Prep'
+  | 'Pron'
+  | 'Int'
+  | 'Verb'
+  | 'Adv'
+  | 'Conj'
+  | 'Form'
+  | 'Num'
+  | 'VMod'
+  | 'Ex'
+  | 'ClO'
+  | 'Neg'
+  | 'Gen';
+
 export type WordObject = {
   word: string;
   freq: string;
-  PoS: string;
+  PoS: patternOfSpeech;
   disp: string;
 };
 
-const corpusObject = (posToRemove: string[] | null = null) => {
+const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
   const compressedWordFreqList = readFileSync(
     `${__dirname}/wordFreqList.json.gz`
   );
