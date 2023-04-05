@@ -28,8 +28,9 @@ const corpusObject = (posToRemove: string[] | null = null) => {
 
     const wordFreq = wordObject.freq;
     const wordFreqNumber = Number(wordFreq);
+    if (isNaN(wordFreqNumber)) return null;
 
-    return wordFreqNumber || null;
+    return wordFreqNumber;
   };
 
   const getMatchedWords = (
