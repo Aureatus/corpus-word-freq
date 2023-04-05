@@ -2,12 +2,12 @@ import { readFileSync } from 'fs';
 
 import { unzipSync } from 'zlib';
 
-export interface WordObject {
+export type WordObject = {
   word: string;
   freq: string;
   PoS: string;
   disp: string;
-}
+};
 
 const corpusObject = (posToRemove: string[] | null = null) => {
   const compressedWordFreqList = readFileSync(
