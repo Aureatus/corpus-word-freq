@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 
 import { unzipSync } from 'zlib';
 
-interface WordObject {
+export interface WordObject {
   word: string;
   freq: string;
   PoS: string;
