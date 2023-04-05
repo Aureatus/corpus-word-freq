@@ -2,6 +2,31 @@ const fs = require('node:fs');
 const readline = require('node:readline');
 const { gzipSync } = require('node:zlib');
 
+const allowedPatternsOfSpeech = [
+  'Uncl',
+  'DetP',
+  'Fore',
+  'NoP',
+  'Adj',
+  'Det',
+  'Inf',
+  'Lett',
+  'NoC',
+  'Prep',
+  'Pron',
+  'Int',
+  'Verb',
+  'Adv',
+  'Conj',
+  'Form',
+  'Num',
+  'VMod',
+  'Ex',
+  'ClO',
+  'Neg',
+  'Gen',
+];
+
 function parseToArrayOfObjects(line, parentArray) {
   let normalizedLine = line;
   normalizedLine = normalizedLine.replaceAll(/\s+/g, ' ').trim();
@@ -23,7 +48,7 @@ function parseToArrayOfObjects(line, parentArray) {
   const PoS = lineArray[1];
   const freq = lineArray[2];
   const disp = lineArray[4];
-  if (PoS === 'Num') return;
+  if (!allowedPatternsOfSpeech.find(e => e === PoS)) return;
   parentArray.push({ word, freq, PoS, disp });
 }
 
