@@ -23,9 +23,13 @@ const corpusObject = (posToRemove: string[] | null = null) => {
 
   const getWordFrequency = (word: string) => {
     const wordObject = wordFreqList.find(e => e.word === word);
-    const wordFreq = wordObject?.freq;
+
+    if (wordObject === undefined) return null;
+
+    const wordFreq = wordObject.freq;
     const wordFreqNumber = Number(wordFreq);
-    return typeof wordFreqNumber === 'number' ? wordFreqNumber : undefined;
+
+    return wordFreqNumber || null;
   };
 
   const getMatchedWords = (
