@@ -34,7 +34,6 @@ function parseToArrayOfObjects(line, parentArray) {
     normalizedLine.includes('@') ||
     normalizedLine.includes('/') ||
     normalizedLine.includes('&') ||
-    normalizedLine.includes('-') ||
     normalizedLine.includes("'")
   )
     return;
