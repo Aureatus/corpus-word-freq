@@ -4,10 +4,7 @@ const { gzipSync } = require('node:zlib');
 
 function parseToArrayOfObjects(line, parentArray) {
   let normalizedLine = line;
-  normalizedLine = normalizedLine
-    .replaceAll(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
+  normalizedLine = normalizedLine.replaceAll(/\s+/g, ' ').trim();
   if (
     normalizedLine.includes('@') ||
     normalizedLine.includes('/') ||
@@ -21,7 +18,7 @@ function parseToArrayOfObjects(line, parentArray) {
   if (unwantedIndex >= 0) lineArray.splice(unwantedIndex, 1);
   unwantedIndex = lineArray.findIndex(element => element === '%');
   if (unwantedIndex >= 0) lineArray.splice(unwantedIndex, 1);
-  const word = lineArray[0];
+  const word = lineArray[0]?.toLowerCase();
   if (word.match(/\d/g)) return;
   const PoS = lineArray[1];
   const freq = lineArray[2];
