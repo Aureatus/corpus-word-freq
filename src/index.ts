@@ -6,6 +6,7 @@ interface WordObject {
   word: string;
   freq: string;
   PoS: string;
+  disp: string;
 }
 
 const corpusObject = (posToRemove: string[] | null = null) => {
