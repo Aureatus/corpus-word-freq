@@ -36,18 +36,18 @@ const corpusObject = (posToRemove: string[] | null = null) => {
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
     const matchedWords: WordObject[] = [];
 
-    for (const [index] of freqList.entries()) {
+    for (const wordObject of freqList) {
       if (matchedWords.length === desiredMatches) break;
       const isWordDuplicate = matchedWords.some(
-        wordObject => freqList[index].word === wordObject.word
+        matchedWordObject => wordObject.word === matchedWordObject.word
       );
 
       if (isWordDuplicate) continue;
 
       const matchedWordObject = lowerCasedWordList.find(
-        word => word === freqList[index].word
+        word => word === wordObject.word
       );
-      if (matchedWordObject) matchedWords.push(freqList[index]);
+      if (matchedWordObject) matchedWords.push(wordObject);
     }
     if (matchedWords.length < desiredMatches)
       throw Error("Couldn't find desired amount of matches");
