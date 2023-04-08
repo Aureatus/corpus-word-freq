@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const readline = require('node:readline');
 const { gzipSync } = require('node:zlib');
+const { decode } = require('he');
 
 const allowedPatternsOfSpeech = [
   'Uncl',
@@ -28,7 +29,8 @@ const allowedPatternsOfSpeech = [
 ];
 
 function parseToArrayOfObjects(line, parentArray) {
-  let normalizedLine = line;
+  const decodedLine = decode(line);
+  let normalizedLine = decodedLine;
   normalizedLine = normalizedLine.replaceAll(/\s+/g, ' ').trim();
   if (
     normalizedLine.includes('@') ||
