@@ -37,7 +37,7 @@ export type WordObject = {
 };
 
 const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
-  const nlp = winkNLP(model);
+  const nlp = winkNLP(model, ['sbd', 'pos']);
 
   const compressedWordFreqList = readFileSync(
     `${__dirname}/wordFreqList.json.gz`
