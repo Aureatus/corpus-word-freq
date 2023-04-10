@@ -41,11 +41,15 @@ export const replacePosTags = (wordListWithPos: nlpWordObject[]) => {
   return replacedWordList;
 };
 
+export type findMatchedWordsOptions = {
+  wordList: (string | nlpWordObject)[];
+  desiredMatches: number;
+  factorPos: boolean;
+};
+
 export const findMatchedWords = (
   freqList: WordObject[],
-  wordList: (string | nlpWordObject)[],
-  desiredMatches: number,
-  factorPos: boolean = true
+  { wordList, desiredMatches, factorPos = true }: findMatchedWordsOptions
 ) => {
   const isNlpWordObject = (e: nlpWordObject | string): e is nlpWordObject =>
     !(typeof e === 'string');

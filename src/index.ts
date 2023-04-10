@@ -92,12 +92,11 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
     const wordListWithReplacedPos = replacePosTags(wordListWithPos);
 
-    const matchedWords = findMatchedWords(
-      freqList,
-      factorPos ? wordListWithReplacedPos : lemmatisedWordList,
+    const matchedWords = findMatchedWords(freqList, {
+      wordList: factorPos ? wordListWithReplacedPos : lemmatisedWordList,
       desiredMatches,
-      factorPos
-    );
+      factorPos,
+    });
     if (matchedWords.length < desiredMatches)
       throw Error("Couldn't find desired amount of matches");
     return matchedWords;
