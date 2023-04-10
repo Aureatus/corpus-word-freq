@@ -1,9 +1,11 @@
-export const replacePosTags = (
-  wordListWithPos: {
-    word: string;
-    pos: string;
-  }[]
-) => {
+import { nlpWordObject } from '.';
+
+type postReplacementNlpWordObject = {
+  word: string;
+  pos: string | undefined;
+};
+
+export const replacePosTags = (wordListWithPos: nlpWordObject[]) => {
   const posObject: { [key: string]: string | undefined } = {
     ADJ: 'Adj',
     ADP: 'Prep',
@@ -25,13 +27,9 @@ export const replacePosTags = (
     SPACE: 'Uncl',
   };
 
-  const posIsString = (wordWithPos: {
-    word: string;
-    pos: string | undefined;
-  }): wordWithPos is {
-    word: string;
-    pos: string;
-  } => {
+  const posIsString = (
+    wordWithPos: postReplacementNlpWordObject
+  ): wordWithPos is nlpWordObject => {
     return wordWithPos.pos !== undefined;
   };
 

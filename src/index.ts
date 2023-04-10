@@ -37,6 +37,11 @@ export type WordObject = {
   disp: string;
 };
 
+export type nlpWordObject = {
+  word: string;
+  pos: string;
+};
+
 const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
   const nlp = winkNLP(model, ['sbd', 'pos']);
 
@@ -95,9 +100,11 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
       }
     } else {
       const tokenPartOfSpeechList = doc.tokens().out(nlp.its.pos);
-      const wordListWithPos = lemmatisedWordList.map((e, index) => {
-        return { word: e, pos: tokenPartOfSpeechList[index] };
-      });
+      const wordListWithPos: nlpWordObject[] = lemmatisedWordList.map(
+        (e, index) => {
+          return { word: e, pos: tokenPartOfSpeechList[index] };
+        }
+      );
 
       const wordListWithReplacedPos = replacePosTags(wordListWithPos);
 
