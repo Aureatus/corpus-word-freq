@@ -69,7 +69,8 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
   const getMatchedWords = (
     wordList: string[],
     desiredMatches: number,
-    common = false
+    common = false,
+    factorPOS = true
   ) => {
     const freqList = common ? [...wordFreqList].reverse() : wordFreqList;
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
@@ -78,19 +79,25 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
     const doc = nlp.readDoc(lowerCasedWordList.join(' '));
     const lemmatisedWordList = doc.tokens().out(nlp.its.lemma);
 
-    for (const wordObject of freqList) {
-      if (matchedWords.length === desiredMatches) break;
-      const isWordDuplicate = matchedWords.some(
-        matchedWordObject => wordObject.word === matchedWordObject.word
-      );
+    if (!factorPOS) {
+      for (const wordObject of freqList) {
+        if (matchedWords.length === desiredMatches) break;
+        const isWordDuplicate = matchedWords.some(
+          matchedWordObject => wordObject.word === matchedWordObject.word
+        );
 
-      if (isWordDuplicate) continue;
+        if (isWordDuplicate) continue;
 
-      const matchedWordObject = lemmatisedWordList.find(
-        word => word === wordObject.word
-      );
-      if (matchedWordObject) matchedWords.push(wordObject);
+        const matchedWordObject = lemmatisedWordList.find(
+          word => word === wordObject.word
+        );
+        if (matchedWordObject) matchedWords.push(wordObject);
+      }
+      if (matchedWords.length < desiredMatches)
+        throw Error("Couldn't find desired amount of matches");
+      return matchedWords;
     }
+
     if (matchedWords.length < desiredMatches)
       throw Error("Couldn't find desired amount of matches");
     return matchedWords;
