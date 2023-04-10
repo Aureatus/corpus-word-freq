@@ -4,7 +4,7 @@ import { unzipSync } from 'zlib';
 
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
-import { replacePosTags } from './utils';
+import { findMatchedWords, replacePosTags } from './utils';
 
 export type patternOfSpeech =
   | 'Uncl'
@@ -84,21 +84,15 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
     const doc = nlp.readDoc(lowerCasedWordList.join(' '));
     const lemmatisedWordList = doc.tokens().out(nlp.its.lemma);
 
-    if (!factorPos) {
-      for (const wordObject of freqList) {
-        if (matchedWords.length === desiredMatches) break;
-        const isWordDuplicate = matchedWords.some(
-          matchedWordObject => wordObject.word === matchedWordObject.word
-        );
-
-        if (isWordDuplicate) continue;
-
-        const matchedWordObject = lemmatisedWordList.find(
-          word => word === wordObject.word
-        );
-        if (matchedWordObject) matchedWords.push(wordObject);
-      }
-    } else {
+    if (!factorPos)
+      findMatchedWords(
+        freqList,
+        lemmatisedWordList,
+        matchedWords,
+        desiredMatches,
+        factorPos
+      );
+    else {
       const tokenPartOfSpeechList = doc.tokens().out(nlp.its.pos);
       const wordListWithPos: nlpWordObject[] = lemmatisedWordList.map(
         (e, index) => {
@@ -108,21 +102,13 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
       const wordListWithReplacedPos = replacePosTags(wordListWithPos);
 
-      for (const wordObject of freqList) {
-        if (matchedWords.length === desiredMatches) break;
-        const isWordDuplicate = matchedWords.some(
-          matchedWordObject =>
-            wordObject.word === matchedWordObject.word &&
-            wordObject.PoS === matchedWordObject.PoS
-        );
-
-        if (isWordDuplicate) continue;
-
-        const matchedWordObject = wordListWithReplacedPos.find(
-          word => word.word === wordObject.word && word.pos === wordObject.PoS
-        );
-        if (matchedWordObject) matchedWords.push(wordObject);
-      }
+      findMatchedWords(
+        freqList,
+        wordListWithReplacedPos,
+        matchedWords,
+        desiredMatches,
+        factorPos
+      );
     }
 
     if (matchedWords.length < desiredMatches)

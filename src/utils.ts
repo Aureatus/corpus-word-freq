@@ -1,4 +1,4 @@
-import { nlpWordObject } from '.';
+import { WordObject, nlpWordObject } from '.';
 
 type postReplacementNlpWordObject = {
   word: string;
@@ -39,4 +39,46 @@ export const replacePosTags = (wordListWithPos: nlpWordObject[]) => {
     })
     .filter(posIsString);
   return replacedWordList;
+};
+
+export const findMatchedWords = (
+  freqList: WordObject[],
+  wordList: (string | nlpWordObject)[],
+  matchedWords: WordObject[],
+  desiredMatches: number,
+  factorPos: boolean = true
+) => {
+  const isNlpWordObject = (e: nlpWordObject | string): e is nlpWordObject =>
+    !(typeof e === 'string');
+
+  if (factorPos) {
+    if (!wordList.every(isNlpWordObject)) return;
+    for (const wordObject of freqList) {
+      if (matchedWords.length === desiredMatches) break;
+      const isWordDuplicate = matchedWords.some(
+        matchedWordObject =>
+          wordObject.word === matchedWordObject.word &&
+          wordObject.PoS === matchedWordObject.PoS
+      );
+
+      if (isWordDuplicate) continue;
+
+      const matchedWordObject = wordList.find(
+        word => word.word === wordObject.word && word.pos === wordObject.PoS
+      );
+      if (matchedWordObject) matchedWords.push(wordObject);
+    }
+  } else {
+    for (const wordObject of freqList) {
+      if (matchedWords.length === desiredMatches) break;
+      const isWordDuplicate = matchedWords.some(
+        matchedWordObject => wordObject.word === matchedWordObject.word
+      );
+
+      if (isWordDuplicate) continue;
+
+      const matchedWordObject = wordList.find(word => word === wordObject.word);
+      if (matchedWordObject) matchedWords.push(wordObject);
+    }
+  }
 };
