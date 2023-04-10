@@ -4,7 +4,7 @@ import { unzipSync } from 'zlib';
 
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
-import { replacePOSTags } from './utils';
+import { replacePosTags } from './utils';
 
 export type patternOfSpeech =
   | 'Uncl'
@@ -70,7 +70,7 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
     wordList: string[],
     desiredMatches: number,
     common = false,
-    factorPOS = true
+    factorPos = true
   ) => {
     const freqList = common ? [...wordFreqList].reverse() : wordFreqList;
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
@@ -79,7 +79,7 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
     const doc = nlp.readDoc(lowerCasedWordList.join(' '));
     const lemmatisedWordList = doc.tokens().out(nlp.its.lemma);
 
-    if (!factorPOS) {
+    if (!factorPos) {
       for (const wordObject of freqList) {
         if (matchedWords.length === desiredMatches) break;
         const isWordDuplicate = matchedWords.some(
@@ -95,11 +95,11 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
       }
     } else {
       const tokenPartOfSpeechList = doc.tokens().out(nlp.its.pos);
-      const wordListWithPOS = lemmatisedWordList.map((e, index) => {
+      const wordListWithPos = lemmatisedWordList.map((e, index) => {
         return { word: e, pos: tokenPartOfSpeechList[index] };
       });
 
-      const wordListWithReplacedPOS = replacePOSTags(wordListWithPOS);
+      const wordListWithReplacedPos = replacePosTags(wordListWithPos);
 
       for (const wordObject of freqList) {
         if (matchedWords.length === desiredMatches) break;
@@ -111,7 +111,7 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
         if (isWordDuplicate) continue;
 
-        const matchedWordObject = wordListWithReplacedPOS.find(
+        const matchedWordObject = wordListWithReplacedPos.find(
           word => word.word === wordObject.word && word.pos === wordObject.PoS
         );
         if (matchedWordObject) matchedWords.push(wordObject);

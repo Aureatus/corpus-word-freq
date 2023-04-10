@@ -1,10 +1,10 @@
-export const replacePOSTags = (
-  wordListWithPOS: {
+export const replacePosTags = (
+  wordListWithPos: {
     word: string;
     pos: string;
   }[]
 ) => {
-  const POSObject: { [key: string]: string | undefined } = {
+  const posObject: { [key: string]: string | undefined } = {
     ADJ: 'Adj',
     ADP: 'Prep',
     ADV: 'Adv',
@@ -25,19 +25,19 @@ export const replacePOSTags = (
     SPACE: 'Uncl',
   };
 
-  const posIsString = (wordWithPOS: {
+  const posIsString = (wordWithPos: {
     word: string;
     pos: string | undefined;
-  }): wordWithPOS is {
+  }): wordWithPos is {
     word: string;
     pos: string;
   } => {
-    return wordWithPOS.pos !== undefined;
+    return wordWithPos.pos !== undefined;
   };
 
-  const replacedWordList = wordListWithPOS
+  const replacedWordList = wordListWithPos
     .map(e => {
-      return { word: e.word, pos: POSObject[e.pos] };
+      return { word: e.word, pos: posObject[e.pos] };
     })
     .filter(posIsString);
   return replacedWordList;
