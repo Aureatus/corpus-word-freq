@@ -52,7 +52,8 @@ export const findMatchedWords = (
     !(typeof e === 'string');
 
   if (factorPos) {
-    if (!wordList.every(isNlpWordObject)) return;
+    if (!wordList.every(isNlpWordObject))
+      throw Error('Not every element of array is of type nlpWordObject');
     for (const wordObject of freqList) {
       if (matchedWords.length === desiredMatches) break;
       const isWordDuplicate = matchedWords.some(
@@ -81,4 +82,5 @@ export const findMatchedWords = (
       if (matchedWordObject) matchedWords.push(wordObject);
     }
   }
+  return matchedWords;
 };
