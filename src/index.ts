@@ -93,32 +93,29 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
         );
         if (matchedWordObject) matchedWords.push(wordObject);
       }
-      if (matchedWords.length < desiredMatches)
-        throw Error("Couldn't find desired amount of matches");
-      return matchedWords;
-    }
+    } else {
+      const tokenPartOfSpeechList = doc.tokens().out(nlp.its.pos);
+      const wordListWithPOS = lemmatisedWordList.map((e, index) => {
+        return { word: e, pos: tokenPartOfSpeechList[index] };
+      });
 
-    const tokenPartOfSpeechList = doc.tokens().out(nlp.its.pos);
-    const wordListWithPOS = lemmatisedWordList.map((e, index) => {
-      return { word: e, pos: tokenPartOfSpeechList[index] };
-    });
+      const wordListWithReplacedPOS = replacePOSTags(wordListWithPOS);
 
-    const wordListWithReplacedPOS = replacePOSTags(wordListWithPOS);
+      for (const wordObject of freqList) {
+        if (matchedWords.length === desiredMatches) break;
+        const isWordDuplicate = matchedWords.some(
+          matchedWordObject =>
+            wordObject.word === matchedWordObject.word &&
+            wordObject.PoS === matchedWordObject.PoS
+        );
 
-    for (const wordObject of freqList) {
-      if (matchedWords.length === desiredMatches) break;
-      const isWordDuplicate = matchedWords.some(
-        matchedWordObject =>
-          wordObject.word === matchedWordObject.word &&
-          wordObject.PoS === matchedWordObject.PoS
-      );
+        if (isWordDuplicate) continue;
 
-      if (isWordDuplicate) continue;
-
-      const matchedWordObject = wordListWithReplacedPOS.find(
-        word => word.word === wordObject.word && word.pos === wordObject.PoS
-      );
-      if (matchedWordObject) matchedWords.push(wordObject);
+        const matchedWordObject = wordListWithReplacedPOS.find(
+          word => word.word === wordObject.word && word.pos === wordObject.PoS
+        );
+        if (matchedWordObject) matchedWords.push(wordObject);
+      }
     }
 
     if (matchedWords.length < desiredMatches)
