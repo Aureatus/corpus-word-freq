@@ -53,7 +53,6 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
   const getWordFrequency = (word: string) => {
     const doc = nlp.readDoc(word);
-    // const lemmatisedWord = doc.tokens().out(nlp.its.lemma)[0];
     const lemmatisedWord = doc.out(nlp.its.lemma);
 
     const wordObject = wordFreqList.find(e => e.word === lemmatisedWord);
