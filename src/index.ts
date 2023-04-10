@@ -79,16 +79,15 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
   ) => {
     const freqList = common ? [...wordFreqList].reverse() : wordFreqList;
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
-    const matchedWords: WordObject[] = [];
+    let matchedWords: WordObject[] = [];
 
     const doc = nlp.readDoc(lowerCasedWordList.join(' '));
     const lemmatisedWordList = doc.tokens().out(nlp.its.lemma);
 
     if (!factorPos)
-      findMatchedWords(
+      matchedWords = findMatchedWords(
         freqList,
         lemmatisedWordList,
-        matchedWords,
         desiredMatches,
         factorPos
       );
@@ -102,10 +101,9 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
       const wordListWithReplacedPos = replacePosTags(wordListWithPos);
 
-      findMatchedWords(
+      matchedWords = findMatchedWords(
         freqList,
         wordListWithReplacedPos,
-        matchedWords,
         desiredMatches,
         factorPos
       );

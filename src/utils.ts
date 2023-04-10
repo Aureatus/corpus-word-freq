@@ -44,12 +44,13 @@ export const replacePosTags = (wordListWithPos: nlpWordObject[]) => {
 export const findMatchedWords = (
   freqList: WordObject[],
   wordList: (string | nlpWordObject)[],
-  matchedWords: WordObject[],
   desiredMatches: number,
   factorPos: boolean = true
 ) => {
   const isNlpWordObject = (e: nlpWordObject | string): e is nlpWordObject =>
     !(typeof e === 'string');
+
+  const matchedWords: WordObject[] = [];
 
   if (factorPos) {
     if (!wordList.every(isNlpWordObject))
