@@ -44,7 +44,7 @@ export type nlpWordObject = {
 
 export type getMatchedWordsOpts = {
   factorPos?: boolean;
-  desiredMatches: number;
+  desiredMatches?: number;
   common?: boolean;
 };
 
@@ -79,7 +79,15 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
   const getMatchedWords = (
     wordList: string[],
-    { desiredMatches, common = false, factorPos = true }: getMatchedWordsOpts
+    {
+      desiredMatches = 20,
+      common = false,
+      factorPos = true,
+    }: getMatchedWordsOpts = {
+      desiredMatches: 20,
+      common: false,
+      factorPos: true,
+    }
   ) => {
     const freqList = common ? [...wordFreqList].reverse() : wordFreqList;
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
