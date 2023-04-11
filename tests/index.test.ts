@@ -22,23 +22,28 @@ describe('Matched words', () => {
   const corpus = corpusObject();
 
   test('Returns correct amount of rare words', () => {
-    expect(corpus.getMatchedWords(BeautifulCreatures, 20)).toHaveLength(20);
+    expect(
+      corpus.getMatchedWords(BeautifulCreatures, { desiredMatches: 20 })
+    ).toHaveLength(20);
   });
 
   test('Returns correct amount of common words', () => {
-    expect(corpus.getMatchedWords(BeautifulCreatures, 20, true)).toHaveLength(
-      20
-    );
+    expect(
+      corpus.getMatchedWords(BeautifulCreatures, {
+        desiredMatches: 20,
+        common: true,
+      })
+    ).toHaveLength(20);
   });
   test('Throws error if not enough words can be found', () => {
-    expect(() => corpus.getMatchedWords(['than'], 4)).toThrow(
-      "Couldn't find desired amount of matches"
-    );
+    expect(() =>
+      corpus.getMatchedWords(['than'], { desiredMatches: 4 })
+    ).toThrow("Couldn't find desired amount of matches");
   });
 
   test("Doesn't return duplicates", () => {
-    expect(() => corpus.getMatchedWords(['than', 'than'], 2)).toThrow(
-      "Couldn't find desired amount of matches"
-    );
+    expect(() =>
+      corpus.getMatchedWords(['than', 'than'], { desiredMatches: 4 })
+    ).toThrow("Couldn't find desired amount of matches");
   });
 });

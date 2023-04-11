@@ -42,6 +42,12 @@ export type nlpWordObject = {
   pos: string;
 };
 
+export type getMatchedWordsOpts = {
+  factorPos?: boolean;
+  desiredMatches: number;
+  common?: boolean;
+};
+
 const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
   const nlp = winkNLP(model, ['sbd', 'pos']);
 
@@ -73,9 +79,7 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
   const getMatchedWords = (
     wordList: string[],
-    desiredMatches: number,
-    common = false,
-    factorPos = true
+    { desiredMatches, common = false, factorPos = true }: getMatchedWordsOpts
   ) => {
     const freqList = common ? [...wordFreqList].reverse() : wordFreqList;
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
