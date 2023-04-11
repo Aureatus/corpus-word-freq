@@ -41,24 +41,25 @@ export const replacePosTags = (wordListWithPos: nlpWordObject[]) => {
   return replacedWordList;
 };
 
-export type findMatchedWordsOptions = {
-  wordList: (string | nlpWordObject)[];
-  desiredMatches: number;
-  factorPos: boolean;
-};
+export type findMatchedWordsOptions =
+  | {
+      factorPos: true;
+      wordList: nlpWordObject[];
+      desiredMatches: number;
+    }
+  | {
+      factorPos: false;
+      wordList: string[];
+      desiredMatches: number;
+    };
 
 export const findMatchedWords = (
   freqList: WordObject[],
-  { wordList, desiredMatches, factorPos = true }: findMatchedWordsOptions
+  { factorPos, wordList, desiredMatches }: findMatchedWordsOptions
 ) => {
-  const isNlpWordObject = (e: nlpWordObject | string): e is nlpWordObject =>
-    !(typeof e === 'string');
-
   const matchedWords: WordObject[] = [];
 
   if (factorPos) {
-    if (!wordList.every(isNlpWordObject))
-      throw Error('Not every element of array is of type nlpWordObject');
     for (const wordObject of freqList) {
       if (matchedWords.length === desiredMatches) break;
       const isWordDuplicate = matchedWords.some(
