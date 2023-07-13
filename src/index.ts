@@ -4,6 +4,7 @@ import { unzipSync } from 'zlib';
 
 import winkNLP from 'wink-nlp';
 import model from 'wink-eng-lite-web-model';
+import { findMatchedWords, replacePosTags } from './utils';
 
 export type patternOfSpeech =
   | 'Uncl'
@@ -36,6 +37,17 @@ export type WordObject = {
   disp: string;
 };
 
+export type nlpWordObject = {
+  word: string;
+  pos: string;
+};
+
+export type getMatchedWordsOpts = {
+  factorPos?: boolean;
+  desiredMatches?: number;
+  common?: boolean;
+};
+
 const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
   const nlp = winkNLP(model, ['sbd', 'pos']);
 
@@ -52,7 +64,6 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
   const getWordFrequency = (word: string) => {
     const doc = nlp.readDoc(word);
-    // const lemmatisedWord = doc.tokens().out(nlp.its.lemma)[0];
     const lemmatisedWord = doc.out(nlp.its.lemma);
 
     const wordObject = wordFreqList.find(e => e.word === lemmatisedWord);
@@ -68,29 +79,42 @@ const corpusObject = (posToRemove: patternOfSpeech[] | null = null) => {
 
   const getMatchedWords = (
     wordList: string[],
-    desiredMatches: number,
-    common = false
+    {
+      desiredMatches = 20,
+      common = false,
+      factorPos = true,
+    }: getMatchedWordsOpts = {
+      desiredMatches: 20,
+      common: false,
+      factorPos: true,
+    }
   ) => {
     const freqList = common ? [...wordFreqList].reverse() : wordFreqList;
     const lowerCasedWordList = wordList.map(e => e.toLowerCase());
-    const matchedWords: WordObject[] = [];
 
     const doc = nlp.readDoc(lowerCasedWordList.join(' '));
     const lemmatisedWordList = doc.tokens().out(nlp.its.lemma);
 
-    for (const wordObject of freqList) {
-      if (matchedWords.length === desiredMatches) break;
-      const isWordDuplicate = matchedWords.some(
-        matchedWordObject => wordObject.word === matchedWordObject.word
-      );
+    const tokenPartOfSpeechList = doc.tokens().out(nlp.its.pos);
+    const wordListWithPos: nlpWordObject[] = lemmatisedWordList.map(
+      (e, index) => {
+        return { word: e, pos: tokenPartOfSpeechList[index] };
+      }
+    );
 
-      if (isWordDuplicate) continue;
+    const wordListWithReplacedPos = replacePosTags(wordListWithPos);
 
-      const matchedWordObject = lemmatisedWordList.find(
-        word => word === wordObject.word
-      );
-      if (matchedWordObject) matchedWords.push(wordObject);
-    }
+    const matchedWords = factorPos
+      ? findMatchedWords(freqList, {
+          factorPos,
+          wordList: wordListWithReplacedPos,
+          desiredMatches,
+        })
+      : findMatchedWords(freqList, {
+          factorPos,
+          wordList: lemmatisedWordList,
+          desiredMatches,
+        });
     if (matchedWords.length < desiredMatches)
       throw Error("Couldn't find desired amount of matches");
     return matchedWords;
